@@ -1,0 +1,496 @@
+/*import{{*/
+import win.ui;
+import fsys;
+import fsys.file;
+import fsys.dlg.dir;
+/*}}*/
+
+/*DSG{{*/
+var winform = win.form(text="创建素材软链接";right=695;bottom=463)
+winform.add(
+Console_List={cls="richedit";left=488;top=40;right=688;bottom=456;multiline=1;readonly=1;vscroll=1;z=4};
+Console_Output={cls="richedit";left=16;top=224;right=480;bottom=456;multiline=1;readonly=1;vscroll=1;z=10};
+SourceFolder_Btn={cls="button";text="1.选择素材文件夹";left=40;top=120;right=232;bottom=152;dt=1;z=2};
+SourceFolder_Path={cls="edit";text="--";left=104;top=23;right=480;bottom=64;autohscroll=false;hidesel=1;multiline=1;readonly=1;z=5};
+SourceFolder_Text={cls="static";text="素材文件夹：";left=24;top=24;right=112;bottom=40;dt=1;transparent=1;z=1};
+Start_Btn={cls="button";text="3.生成Bat";left=24;top=168;right=480;bottom=216;dt=1;z=3};
+TargetFolder_Btn={cls="button";text="2.选择目标文件夹";left=272;top=120;right=464;bottom=152;dt=1;z=6};
+TargetFolder_Path={cls="edit";text="--";left=104;top=64;right=480;bottom=105;autohscroll=false;hidesel=1;multiline=1;readonly=1;z=8};
+TargetFolder_Text={cls="static";text="目标文件夹：";left=24;top=64;right=112;bottom=80;dt=1;transparent=1;z=7};
+static2={cls="static";text="文件列表：";left=488;top=16;right=576;bottom=32;dt=1;transparent=1;z=9}
+)
+/*}}*/
+
+/*初始化参数{{*/
+SourceFolderPath = false;
+TargetFolderPath = false;
+/*
+winform.Console_List.onChange = function(){ 
+	if(owner.onModified)owner.onModified(true);
+	winform.Console_List.vScroll();
+}
+*/
+winform.Console_Output.onChange = function(){ 
+	if(owner.onModified)owner.onModified(true);
+	winform.Console_Output.vScroll();
+}
+/*}}*/
+
+/*素材文件夹按钮{{*/
+winform.SourceFolder_Btn.oncommand = function(id,event){
+	winform.Console_List.text = "";
+	winform.Console_Output.text = "";
+	var path = fsys.dlg.dir(,winform,'请选择素材"Pro2丨Titan"的上级目录')
+	if(path){
+		winform.SourceFolder_Path.text = path;
+		SourceFolderPath = winform.SourceFolder_Path.text;
+		//Pro2文件搜索
+		pro2dirlist, pro2videolist, pro2picturelist, pro2errorlist = Pro2list(SourceFolderPath);
+		//Titan文件搜索
+		titandirlist, titanvideolist, titanpicturelist, titanerrorlist = Titanlist(SourceFolderPath);
+		//统计Pro2素材数量
+		winform.Console_Output.appendText('Pro2:'+'\n');
+		winform.Console_Output.appendText('├─Picture: '+#pro2picturelist+'\n');
+		winform.Console_Output.appendText('├─Video:   '+#pro2videolist+'\n');
+		//统计Titan素材数量
+		winform.Console_Output.appendText('Titan:'+'\n');
+		winform.Console_Output.appendText('├─Picture: '+#titanpicturelist+'\n');
+		winform.Console_Output.appendText('├─Video:   '+#titanvideolist+'\n');
+		winform.Console_Output.appendText('------------------------------'+'\n');
+		//分隔线
+		winform.Console_List.appendText('------------------------------'+'\n');
+		//检查Pro2目录数量
+		check = false;
+		if(#pro2dirlist=7){
+			output_show('Pro2素材卡目录数量为7个---正常',"g");
+			output_show('\n',"b");
+			check = true;
+		}
+		elseif(#pro2dirlist=0){
+			output_show('无Pro2素材---正常',"g");
+			output_show('\n',"b");
+			//winform.Console_Output.appendText('无Pro2素材---正常'+'\n');
+		}
+		else {
+			output_show('Pro2素材卡目录数量为'+#pro2dirlist+'个---不正常',"r");
+			output_show('\n',"b");
+			//winform.Console_Output.appendText('Pro2素材卡目录数量为'+#pro2dirlist+'个---不正常'+'\n');
+			check = true;
+		}
+		winform.Console_List.appendText("Pro2:"+'\n');
+		for(i=1;#pro2picturelist;1){
+			winform.Console_List.appendText('├─');
+			list_show(pro2picturelist[i],"b");
+			//winform.Console_List.appendText(pro2picturelist[i]);
+			winform.Console_List.appendText('\n');
+		}
+		for(i=1;#pro2videolist;1){
+			if(check){
+				//检查每个Pro2项目文件数量
+				var filescount,state = CheckFiles("Pro2",pro2dirlist,pro2videolist[i]);
+				if(filescount != 14){
+					winform.Console_List.appendText('├─');
+					list_show(pro2videolist[i],"r");
+					winform.Console_List.appendText('\n');
+					output_show('Pro2视频素材: '+pro2videolist[i]+' 文件数量为'+filescount+'个---不正常',"r");
+					output_show('\n',"b");
+					//winform.Console_Output.appendText('Pro2视频素材: '+pro2videolist[i]+' 文件数量为'+filescount+'个---不正常'+'\n');
+					//winform.Console_Output.appendText(state[0]+'\n');
+					if(#state = 0){
+					}
+					else {
+						for(j=1;#state;1){
+							output_show('Pro2视频素材: '+pro2videolist[i]+' 缺失: '+state[j],"r");
+							output_show('\n',"b");
+							//winform.Console_Output.appendText('Pro2视频素材: '+pro2videolist[i]+' 缺失: '+state[j]+'\n');
+						}
+					}
+				}
+				else {
+					winform.Console_List.appendText('├─');
+					list_show(pro2videolist[i],"b");
+					winform.Console_List.appendText('\n');
+				}
+				
+			}
+		}
+		
+		//分隔线
+		list_show('------------------------------',"b");
+		winform.Console_List.appendText('\n');
+		winform.Console_Output.appendText('------------------------------'+'\n');
+		//检查Titan目录数量
+		check = false;
+		if(#titandirlist=9){
+			output_show('Titan素材卡目录数量为9个---正常',"g");
+			output_show('\n',"b");
+			//winform.Console_Output.appendText('Titan素材卡目录数量为9个---正常'+'\n');
+			check = true;
+		}
+		elseif(#titandirlist=0){
+			output_show('无Titan素材---正常',"g");
+			output_show('\n',"b");
+			//winform.Console_Output.appendText('无Titan素材---正常'+'\n');
+		}
+		else {
+			output_show('Titan素材卡目录数量为'+#titandirlist+'个---不正常',"r");
+			output_show('\n',"b");
+			//winform.Console_Output.appendText('Titan素材卡目录数量为'+#titandirlist+'个---不正常'+'\n');
+			check = true;
+		}
+		winform.Console_List.appendText("Titan:");
+		winform.Console_List.appendText('\n');
+		for(i=1;#titanpicturelist;1){
+			winform.Console_List.appendText('├─');
+			list_show(titanpicturelist[i],"b");
+			//winform.Console_List.appendText(titanpicturelist[i]);
+			winform.Console_List.appendText('\n');
+		}
+		for(i=1;#titanvideolist;1){
+			if(check){
+				//检查每个Titan项目文件数量
+				var filescount,state = CheckFiles("Titan",titandirlist,titanvideolist[i]);
+				if(filescount != 18){
+					winform.Console_List.appendText('├─');
+					list_show(titanvideolist[i],"r");
+					winform.Console_List.appendText('\n');
+					output_show('Titan视频素材: '+titanvideolist[i]+' 文件数量为'+filescount+'个---不正常',"r");
+					output_show('\n',"b");
+					//winform.Console_Output.appendText('Titan视频素材: '+titanvideolist[i]+' 文件数量为'+filescount+'个---不正常'+'\n');
+					//winform.Console_Output.appendText(state[0]+'\n');
+					if(#state = 0){
+					}
+					else {
+						for(i=1;#state;1){
+							output_show('Titan视频素材: '+titanvideolist[i]+' 缺失: '+state[i],"r");
+							output_show('\n',"b");
+							//winform.Console_Output.appendText('Titan视频素材: '+titanvideolist[i]+' 缺失: '+state[i]+'\n');
+						}
+					}
+				}
+				else {
+					winform.Console_List.appendText('├─');
+					list_show(titanvideolist[i],"b");
+					//winform.Console_List.appendText(titanvideolist[i]);
+					winform.Console_List.appendText('\n');
+				}
+				
+			}
+		}
+		//win.msgbox(pro2dirlist);
+		//win.msgbox(pro2videolist);
+	}	
+}
+/*}}*/
+
+/*目标文件夹按钮{{*/
+winform.TargetFolder_Btn.oncommand = function(id,event){
+	var path = fsys.dlg.dir(,winform,'请选择目标根目录')
+	if(path){
+		winform.TargetFolder_Path.text = path;
+		TargetFolderPath = path;
+	}
+	else {
+		win.msgbox("选择错误")
+	}
+	
+}
+/*}}*/
+
+/*生成Bat{{*/
+//生成Bat
+winform.Start_Btn.oncommand = function(id,event){
+	if(!SourceFolderPath or !TargetFolderPath){
+		win.msgbox("文件夹设置错误")
+		return ; 
+	}
+	var tm = time.now();
+	tm.format = "-%Y.%m.%d-%H.%M.%S";
+	//创建.bat文件
+	var path = "\MKlink"+ tostring(tm) +".bat";
+	var file = fsys.file(path,"a+");
+	//写入提权命令
+	file.write("@echo off"+'\n'+"setlocal"+'\n'+"set uac=~uac_permission_tmp_%random%"+'\n'+'md "%SystemRoot%\\system32\\%uac%" 2>nul'+'\n'+'if %errorlevel%==0 ( rd "%SystemRoot%\\system32\\%uac%" >nul 2>nul ) else ('+'\n'+'    echo set uac = CreateObject^("Shell.Application"^)>"%temp%\\%uac%.vbs"'+'\n'+'    echo uac.ShellExecute "%~s0","","","runas",1 >>"%temp%\\%uac%.vbs"'+'\n'+'    echo WScript.Quit >>"%temp%\\%uac%.vbs"'+'\n'+'    "%temp%\\%uac%.vbs" /f'+'\n'+'    del /f /q "%temp%\\%uac%.vbs" & exit )'+'\n'+"endlocal"+'\n'+"echo on"+'\n');
+	//file.write('mklink "D:\\Temp\\Pro2\\test.mp4" "D:\\MetaFutura\\aardio\\project\\insta360stitcher\\pro2\\VID_20240326_082422\\origin_8_lrv.mp4"');
+	//提权后恢复路径
+	file.write('cd /d '+ '"' + TargetFolderPath + '"' + '\n');
+	//如果有pro2素材则创建pro2素材文件夹
+	if(#pro2picturelist>0 or #pro2videolist>0){
+		var currentlist = {};
+		table.append(currentlist,pro2picturelist,pro2videolist);
+		file.write('md Pro2'+'\n');
+		for(i=1;#currentlist;1){
+			file.write('md Pro2\\'+currentlist[i]+'\n');
+		}
+		for(i=1;#pro2dirlist;1){
+			for(j=1;#currentlist;1){
+				var currentdir = pro2dirlist[i]+'\\'+currentlist[j];
+				//加入每个素材文件表
+				try{
+					fsys.enum( currentdir, "*.*",
+						function(dir,filename,fullpath,findData){ 
+							if(filename){ 
+								file.write('mklink Pro2\\'+currentlist[j]+'\\'+filename+' "'+fullpath+'"\n');
+				           		//mklink "D:\MetaFutura\aardio\project\insta360stitcher\pro2\test.mp4" "D:\MetaFutura\aardio\project\insta360stitcher\pro2\VID_20240326_082422\origin_8_lrv.mp4"
+				           		//io.print("发现文件："+filename,"完整路径："+fullpath,"当前目录完整路径"+dir)
+				           		
+							}
+						} 
+						,/*如果此参数为false则忽略子目录*/
+					);
+				}
+				//win.msgbox(currentdir);
+			}
+		
+		}
+	}
+	//如果有Titan素材则创建Titan素材文件夹
+	if(#titanpicturelist>0 or #titanvideolist>0){
+		var currentlist = {};
+		table.append(currentlist,titanpicturelist,titanvideolist);
+		file.write('md Titan'+'\n');
+		for(i=1;#currentlist;1){
+			file.write('md Titan\\'+currentlist[i]+'\n');
+		}
+		for(i=1;#titandirlist;1){
+			for(j=1;#currentlist;1){
+				var currentdir = titandirlist[i]+'\\'+currentlist[j];
+				//加入每个素材文件表
+				try{
+					fsys.enum( currentdir, "*.*",
+						function(dir,filename,fullpath,findData){ 
+							if(filename){ 
+								file.write('mklink Titan\\'+currentlist[j]+'\\'+filename+' "'+fullpath+'"\n');
+				           		//mklink "D:\MetaFutura\aardio\project\insta360stitcher\pro2\test.mp4" "D:\MetaFutura\aardio\project\insta360stitcher\pro2\VID_20240326_082422\origin_8_lrv.mp4"
+				           		//io.print("发现文件："+filename,"完整路径："+fullpath,"当前目录完整路径"+dir)
+				           		
+							}
+						} 
+						,/*如果此参数为false则忽略子目录*/
+					);
+				}
+				//win.msgbox(currentdir);
+			}
+		
+		}
+	}
+	//file.write('\n'+'pause');
+	file.close(); //关闭使用io.open打开的文件file对象。
+	var batfullpath = io.fullpath( path )
+	winform.Console_Output.appendText('已输出，请运行.bat文件'+'\n')
+	winform.Console_Output.appendText(batfullpath+'\n')
+	
+}
+/*}}*/
+
+/*搜索Pro2目录功能{{*/
+Pro2list = function(pro2path){
+	//创建空的Pro2根目录表
+	var pro2dirlist = {};
+	//创建空的Pro2素材目录表
+	var pro2sourcelist = {};
+	//创建空的Pro2素材错误目录表
+	var pro2errorlist = {};
+	//创建空的Pro2视频文件表
+	var pro2videolist = {};
+	//创建空的Pro2图片文件表
+	var pro2picturelist = {};
+	
+	fsys.enum( pro2path, "*.*",,  
+    	function(dirPath,dirName){  
+        	/*处理每个子目录前首先调用此函数,返回false跳过该目录*/  
+        	//Pro2目录格式"Pro2-A-0"
+			if(string.match(dirName,"^[Pp][Rr][Oo]2-[A-Z]-[0-9]$")){
+        		//加入pro2目录表
+        		table.append(pro2dirlist,{dirPath});
+				//加入每个Pro2视频文件表
+				fsys.enum( dirPath, "*.*",,  
+    				function(dirPath,dirName){  
+        				/*处理每个子目录前首先调用此函数,返回false跳过该目录*/  
+						if(string.match(dirName,"^VID_[0-9]+_[0-9]+$")){
+        					table.append(pro2videolist,{dirName});
+        					//console.log(dirPath);
+        				}
+        				else {
+        					return false;  
+        				}
+        				return false;  
+    				}   
+				)
+				//加入每个Pro2图片文件表
+				fsys.enum( dirPath, "*.*",,  
+    				function(dirPath,dirName){  
+        				/*处理每个子目录前首先调用此函数,返回false跳过该目录*/  
+						if(string.match(dirName,"^PIC_[0-9]+_[0-9]+$")){
+        					table.append(pro2picturelist,{dirName});
+        					//console.log(dirPath);
+        				}
+        				else {
+        					return false;  
+        				}
+        				return false;  
+    				}   
+				)
+        		//console.log(dirPath);
+        	}
+        	else {
+        		return false;  
+        	}
+        	return false;  
+    	}   
+	)
+	//去重
+	var pro2videolist = table.unique(pro2videolist);
+	var pro2picturelist = table.unique(pro2picturelist);
+	return pro2dirlist, pro2videolist, pro2picturelist, pro2errorlist; 
+}
+/*}}*/
+
+/*搜索Titan目录功能{{*/
+Titanlist = function(titanpath){
+	//创建空的Titan目录表
+	var titandirlist = {};
+	//创建空的Titan素材目录表
+	var titansourcelist = {};
+	//创建空的Titan素材错误目录表
+	var titanerrorlist = {};
+	//创建空的Titan视频文件表
+	var titanvideolist = {};
+	//创建空的Titan图片文件表
+	var titanpicturelist = {};
+	
+	fsys.enum( titanpath, "*.*",,  
+    	function(dirPath,dirName){  
+        	/*处理每个子目录前首先调用此函数,返回false跳过该目录*/  
+        	//Titan目录格式"Titan-A-0"
+			if(string.match(dirName,"^[Tt][Ii][Tt][Aa][Nn]-[A-Z]-[0-9]$")){
+        		//加入Titan目录表
+        		table.append(titandirlist,{dirPath});
+				//加入每个Titan视频文件表
+				fsys.enum( dirPath, "*.*",,  
+    				function(dirPath,dirName){  
+        				/*处理每个子目录前首先调用此函数,返回false跳过该目录*/  
+						if(string.match(dirName,"^VID_[0-9]+_[0-9]+$")){
+        					table.append(titanvideolist,{dirName});
+        					//console.log(dirPath);
+        				}
+        				else {
+        					return false;  
+        				}
+        				return false;  
+    				}   
+				)
+				//加入每个Titan图片文件表
+				fsys.enum( dirPath, "*.*",,  
+    				function(dirPath,dirName){  
+        				/*处理每个子目录前首先调用此函数,返回false跳过该目录*/  
+						if(string.match(dirName,"^PIC_[0-9]+_[0-9]+$")){
+        					table.append(titanpicturelist,{dirName});
+        					//console.log(dirPath);
+        				}
+        				else {
+        					return false;  
+        				}
+        				return false;  
+    				}   
+				)
+        		//console.log(dirPath);
+        	}
+        	else {
+        		return false;  
+        	}
+        	return false;  
+    	}   
+	)
+	//去重
+	var titanvideolist = table.unique(titanvideolist);
+	var titanpicturelist = table.unique(titanpicturelist);
+	return titandirlist, titanvideolist, titanpicturelist; 
+}
+/*}}*/
+
+/*检查文件数量{{*/
+CheckFiles = function(model,dirlist,videoname){
+	//创建文件内容预设
+	if(model = "Pro2"){
+		preloadfilelist = {"origin_1.mp4","origin_1_lrv.mp4","origin_2.mp4","origin_2_lrv.mp4","origin_3.mp4","origin_3_lrv.mp4","origin_4.mp4","origin_4_lrv.mp4","origin_5.mp4","origin_5_lrv.mp4","origin_6.mp4","origin_6_lrv.mp4","preview.mp4","pro.prj"}
+		table.sort(preloadfilelist);
+	}
+	elseif(model = "Titan"){
+		preloadfilelist = {"origin_1.mp4","origin_1_lrv.mp4","origin_2.mp4","origin_2_lrv.mp4","origin_3.mp4","origin_3_lrv.mp4","origin_4.mp4","origin_4_lrv.mp4","origin_5.mp4","origin_5_lrv.mp4","origin_6.mp4","origin_6_lrv.mp4","origin_7.mp4","origin_7_lrv.mp4","origin_8.mp4","origin_8_lrv.mp4","preview.mp4","pro.prj"}
+		table.sort(preloadfilelist);
+	}
+	//创建空的素材文件表
+	var fileslist = {};
+	for(j=1;#dirlist;1){
+		var currentdir = dirlist[j]+'\\'+videoname;
+		//加入每个素材文件表
+		try{
+			fsys.enum( currentdir, "*.*",
+				function(dir,filename,fullpath,findData){ 
+					if(filename){ 
+						table.append(fileslist,{filename});
+				        //io.print("发现文件："+filename,"完整路径："+fullpath,"当前目录完整路径"+dir)
+					}
+				} 
+				,/*如果此参数为false则忽略子目录*/
+			);
+		}
+	}
+	table.sort(fileslist);
+	//win.msgbox(fileslist);
+	//win.msgbox(preloadfilelist);
+	currentstate = {};
+	if(#fileslist = #preloadfilelist){
+		//win.msgbox("true");
+	}
+	else {
+		//win.msgbox("false");
+		for(i=1;#fileslist;1){
+			var x = table.find(preloadfilelist,fileslist[i]);
+			if(x){
+				table.remove(preloadfilelist,x)
+				//table.removeByValue(preloadfilelist,{preloadfilelist[x]});
+				//table.append(currentstate,{preloadfilelist[x]});
+				//win.msgbox(preloadfilelist[x])
+			}
+		}
+		
+		
+	}
+	return #fileslist, preloadfilelist; 
+}
+/*}}*/
+
+/*List彩色文字{{*/
+list_show=function(data,color,bkcolor){
+	if(!data) return ;
+	var color_tab={y=0xffff;r=0xff;g=0xcc00;f=0xff00ff;w=0xffffff;h=0xcccccc};
+	var color_tab={y=0xffff;r=0xff;g=0xcc00;f=0xff00ff;w=0xffffff;h=0xcccccc;b=0x000001};
+	if(type(color)==type.string) color=color_tab[color];
+	if(type(bkcolor)==type.string) bkcolor=color_tab[bkcolor];
+	winform.Console_List.appendText(data);
+	var start = winform.Console_List.lineToChar(0);//因为最后一行总是空白的(只有一个换行符),所以应该是设置倒数第二行
+	winform.Console_List.setsel(start,-1);
+	winform.Console_List.setSelCharformat(textColor = color;backColor = bkcolor);
+	winform.Console_List.deselect();
+}
+/*}}*/
+
+/*Output彩色文字{{*/
+output_show=function(data,color,bkcolor){
+	if(!data) return ;
+	var color_tab={y=0xffff;r=0xff;g=0xcc00;f=0xff00ff;w=0xffffff;h=0xcccccc};
+	var color_tab={y=0xffff;r=0xff;g=0xcc00;f=0xff00ff;w=0xffffff;h=0xcccccc;b=0x000001};
+	if(type(color)==type.string) color=color_tab[color];
+	if(type(bkcolor)==type.string) bkcolor=color_tab[bkcolor];
+	winform.Console_Output.appendText(data);
+	var start = winform.Console_Output.lineToChar(0);//因为最后一行总是空白的(只有一个换行符),所以应该是设置倒数第二行
+	winform.Console_Output.setsel(start,-1);
+	winform.Console_Output.setSelCharformat(textColor = color;backColor = bkcolor);
+	winform.Console_Output.deselect();
+}
+/*}}*/
+
+winform.show();
+win.loopMessage();
