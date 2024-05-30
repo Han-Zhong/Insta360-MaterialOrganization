@@ -6,7 +6,7 @@
 
 [![Licence](https://img.shields.io/badge/LICENSE-GPL3.0-green.svg?style=for-the-badge)](https://github.com/Han-Zhong/Insta360_MaterialOrganization/blob/main/LICENSE)
 
-用来管理 "Insta360 Pro 2" 和 "Insta360 Titan"拍摄回来的素材
+用来预处理 "Insta360 Pro 2" 和 "Insta360 Titan"拍摄回来的素材
 
 </div>
 
@@ -15,7 +15,7 @@
 > [!IMPORTANT]
 > 此项目是因为每次insta360 pro2和titan拍摄回来以后每张卡素材需要合并、整理、检查等等
 >
-> 偶然发现MKlink软链接可以使用Insta360 Stitcher缝合，并且输出的目录是0kb，不占用空间！
+> 偶然发现MKlink软链接可以使用Insta360 Stitcher缝合，并且输出的目录是0kb，不影响原素材，不占用空间！
 >
 > 故做此软件方便素材的合并、整理和检查！
 
