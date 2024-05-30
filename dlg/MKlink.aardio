@@ -4,7 +4,6 @@ import fsys;
 import fsys.file;
 import fsys.dlg.dir;
 /*}}*/
-
 /*DSG{{*/
 var winform = win.form(text="创建素材软链接";right=695;bottom=463)
 winform.add(

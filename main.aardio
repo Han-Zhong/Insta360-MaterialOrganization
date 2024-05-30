@@ -1,6 +1,6 @@
 import win.ui;
 /*DSG{{*/
-mainForm = win.form(text="MetaStitcher";right=757;bottom=467)
+mainForm = win.form(text="Insta360_MaterialOrganization";right=757;bottom=467)
 mainForm.add(
 button={cls="button";text="创建素材软链接";left=48;top=384;right=200;bottom=424;z=1}
 )
