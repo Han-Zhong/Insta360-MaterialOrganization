@@ -1,13 +1,12 @@
 <div align="center">
 
-# Insta360_MaterialOrganization
+# Insta360_素材管理
 
-[**English**](./README.md) | [**中文简体**](./README_zh_CN.md)
+[**中文简体**](./README.md) | [**English**](./README_en_US.md)
 
 [![Licence](https://img.shields.io/badge/LICENSE-GPL3.0-green.svg?style=for-the-badge)](https://github.com/Han-Zhong/Insta360_MaterialOrganization/blob/main/LICENSE)
 
-For Organizing All "Insta360 Pro 2" and "Insta360 Titan" SD Card Materials
-will update description soon!
+用来管理 "Insta360 Pro 2" 和 "Insta360 Titan"拍摄回来的素材
 
 </div>
 
