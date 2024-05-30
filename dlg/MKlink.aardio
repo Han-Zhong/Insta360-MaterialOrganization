@@ -160,8 +160,8 @@ winform.SourceFolder_Btn.oncommand = function(id,event){
 					if(#state = 0){
 					}
 					else {
-						for(i=1;#state;1){
-							output_show('Titan视频素材: '+titanvideolist[i]+' 缺失: '+state[i],"r");
+						for(j=1;#state;1){
+							output_show('Titan视频素材: '+titanvideolist[i]+' 缺失: '+state[j],"r");
 							output_show('\n',"b");
 							//winform.Console_Output.appendText('Titan视频素材: '+titanvideolist[i]+' 缺失: '+state[i]+'\n');
 						}
