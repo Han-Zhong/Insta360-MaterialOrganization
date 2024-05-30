@@ -13,48 +13,222 @@ will update description soon!
 
 ## Usage
 
+### Preprocessing
+
+- Shoot Video Footage Using "Insta360 Pro 2" & "Insta360 Titan"
+
+- Preorganize folder
+
+``2024-03-24`` is top folder, name it whatever you want
+
+``Pro2-A-0``...``Pro2-A-6`` is each Pro2 SD and TF card folder, A-Z is each set of cards, 0-6 is the name of each card(TF0 and SD0-SD5)
+
+``Titan-A-0``...``Titan-A-8`` is each Titan SD card folder, A-Z is each set of cards, 0-8 is the name of each SDcard(SD0-SD8)
+
+<details>
+  <summary>
+    Preorganize folder to ↓ this structure
+  </summary>
+  
+```shell
+2024-03-24
+├─ Pro2-A-0
+│    ├─ .LOST.DIR
+│    ├─ .pro_suc
+│    └─ VID_20240324_090228
+│           ├─ origin_1_lrv.mp4
+│           ├─ origin_2_lrv.mp4
+│           ├─ origin_3_lrv.mp4
+│           ├─ origin_4_lrv.mp4
+│           ├─ origin_5_lrv.mp4
+│           ├─ origin_6_lrv.mp4
+│           ├─ preview.mp4
+│           └─ pro.prj
+├─ Pro2-A-1
+│    ├─ .pro_suc
+│    ├─ DCIM
+│    ├─ EVENT
+│    └─ VID_20240324_090228
+│           └─ origin_1.mp4
+├─ Pro2-A-2
+│    ├─ .pro_suc
+│    ├─ DCIM
+│    ├─ EVENT
+│    └─ VID_20240324_090228
+│           └─ origin_2.mp4
+├─ Pro2-A-3
+│    ├─ .pro_suc
+│    ├─ DCIM
+│    ├─ EVENT
+│    └─ VID_20240324_090228
+│           └─ origin_3.mp4
+├─ Pro2-A-4
+│    ├─ .pro_suc
+│    ├─ DCIM
+│    ├─ EVENT
+│    └─ VID_20240324_090228
+│           └─ origin_4.mp4
+├─ Pro2-A-5
+│    ├─ .pro_suc
+│    ├─ DCIM
+│    ├─ EVENT
+│    └─ VID_20240324_090228
+│           └─ origin_5.mp4
+├─ Pro2-A-6
+│    ├─ .pro_suc
+│    ├─ DCIM
+│    ├─ EVENT
+│    └─ VID_20240324_090228
+│           └─ origin_6.mp4
+├─ Titan-A-0
+│    ├─ .LOST.DIR
+│    ├─ .pro_suc
+│    ├─ AMBA
+│    ├─ EVENT
+│    ├─ PIC_20240324_183332
+│    │    ├─ gyro.mp4
+│    │    ├─ origin_1_1.jpg
+│    │    ├─ origin_1_2.jpg
+│    │    ├─ origin_1_3.jpg
+│    │    ├─ origin_1_4.jpg
+│    │    ├─ origin_1_5.jpg
+│    │    ├─ origin_1_6.jpg
+│    │    ├─ origin_1_7.jpg
+│    │    ├─ origin_1_8.jpg
+│    │    ├─ origin_2_1.jpg
+│    │    ├─ origin_2_2.jpg
+│    │    ├─ origin_2_3.jpg
+│    │    ├─ origin_2_4.jpg
+│    │    ├─ origin_2_5.jpg
+│    │    ├─ origin_2_6.jpg
+│    │    ├─ origin_2_7.jpg
+│    │    ├─ origin_2_8.jpg
+│    │    ├─ origin_3_1.jpg
+│    │    ├─ origin_3_2.jpg
+│    │    ├─ origin_3_3.jpg
+│    │    ├─ origin_3_4.jpg
+│    │    ├─ origin_3_5.jpg
+│    │    ├─ origin_3_6.jpg
+│    │    ├─ origin_3_7.jpg
+│    │    ├─ origin_3_8.jpg
+│    │    ├─ pro.prj
+│    │    └─ thumbnail.jpg
+│    └─ VID_20240324_095334
+│           ├─ origin_1_lrv.mp4
+│           ├─ origin_2_lrv.mp4
+│           ├─ origin_3_lrv.mp4
+│           ├─ origin_4_lrv.mp4
+│           ├─ origin_5_lrv.mp4
+│           ├─ origin_6_lrv.mp4
+│           ├─ origin_7_lrv.mp4
+│           ├─ origin_8_lrv.mp4
+│           ├─ preview.mp4
+│           └─ pro.prj
+├─ Titan-A-1
+│    ├─ .pro_suc
+│    ├─ AMBA
+│    ├─ EVENT
+│    ├─ PIC_20240324_183332
+│    │    ├─ origin_1_1.dng
+│    │    ├─ origin_2_1.dng
+│    │    └─ origin_3_1.dng
+│    └─ VID_20240324_095334
+│           └─ origin_1.mp4
+├─ Titan-A-2
+│    ├─ .pro_suc
+│    ├─ AMBA
+│    ├─ EVENT
+│    ├─ PIC_20240324_183332
+│    │    ├─ origin_1_2.dng
+│    │    ├─ origin_2_2.dng
+│    │    └─ origin_3_2.dng
+│    └─ VID_20240324_095334
+│           └─ origin_2.mp4
+├─ Titan-A-3
+│    ├─ .pro_suc
+│    ├─ AMBA
+│    ├─ EVENT
+│    ├─ PIC_20240324_183332
+│    │    ├─ origin_1_3.dng
+│    │    ├─ origin_2_3.dng
+│    │    └─ origin_3_3.dng
+│    └─ VID_20240324_095334
+│           └─ origin_3.mp4
+├─ Titan-A-4
+│    ├─ .pro_suc
+│    ├─ AMBA
+│    ├─ EVENT
+│    ├─ PIC_20240324_183332
+│    │    ├─ origin_1_4.dng
+│    │    ├─ origin_2_4.dng
+│    │    └─ origin_3_4.dng
+│    └─ VID_20240324_095334
+│           └─ origin_4.mp4
+├─ Titan-A-5
+│    ├─ .LOST.DIR
+│    ├─ .pro_suc
+│    ├─ AMBA
+│    ├─ EVENT
+│    ├─ PIC_20240324_183332
+│    │    ├─ origin_1_5.dng
+│    │    ├─ origin_2_5.dng
+│    │    └─ origin_3_5.dng
+│    └─ VID_20240324_095334
+│           └─ origin_5.mp4
+├─ Titan-A-6
+│    ├─ .pro_suc
+│    ├─ AMBA
+│    ├─ EVENT
+│    ├─ PIC_20240324_183332
+│    │    ├─ origin_1_6.dng
+│    │    ├─ origin_2_6.dng
+│    │    └─ origin_3_6.dng
+│    └─ VID_20240324_095334
+│           └─ origin_6.mp4
+├─ Titan-A-7
+│    ├─ .pro_suc
+│    ├─ AMBA
+│    ├─ EVENT
+│    ├─ PIC_20240324_183332
+│    │    ├─ origin_1_7.dng
+│    │    ├─ origin_2_7.dng
+│    │    └─ origin_3_7.dng
+│    └─ VID_20240324_095334
+│           └─ origin_7.mp4
+└─ Titan-A-8
+       ├─ .pro_suc
+       ├─ AMBA
+       ├─ EVENT
+       ├─ PIC_20240324_183332
+       │    ├─ origin_1_8.dng
+       │    ├─ origin_2_8.dng
+       │    └─ origin_3_8.dng
+       └─ VID_20240324_095334
+              └─ origin_8.mp4
+```
+</details>
+
+
+
+
 ### Inference
 
 #### GUI
 
-![GUI](https://raw.githubusercontent.com/voicepaw/so-vits-svc-fork/main/docs/_static/gui.png)
+GUI_MKlink
 
-GUI launches with the following command:
+![GUI](https://raw.githubusercontent.com/Han-Zhong/Insta360_MaterialOrganization/main/docs/gui_mklink.png)
 
-```shell
-svcg
-```
+GUI_Main:Beta
 
-#### CLI
+![GUI](https://raw.githubusercontent.com/Han-Zhong/Insta360_MaterialOrganization/main/docs/gui_main.png)
 
-- Realtime (from microphone)
+For GUI_MKlink
 
-```shell
-svc vc
-```
+1.Select Your Preorganized folder ``Dailies\2024-03-24``(for me)
 
-- File
+2.Select Your Target folder ``D:\Test``(for me)
 
-```shell
-svc infer source.wav
-```
+3.Click Generate ".bat" File
 
-Pretrained models are available on [Hugging Face](https://huggingface.co/models?search=so-vits-svc) or [CIVITAI](https://civitai.com/?query=so-vits-svc).
-
-#### Notes
-
-- If using WSL, please note that WSL requires additional setup to handle audio and the GUI will not work without finding an audio device.
-- In real-time inference, if there is noise on the inputs, the HuBERT model will react to those as well. Consider using realtime noise reduction applications such as [RTX Voice](https://www.nvidia.com/en-us/geforce/guides/nvidia-rtx-voice-setup-guide/) in this case.
-- Models other than for 4.0v1 or this repository are not supported.
-- GPU inference requires at least 4 GB of VRAM. If it does not work, try CPU inference as it is fast enough. [^r-inference]
-
-[^r-inference]: [#469](https://github.com/voicepaw/so-vits-svc-fork/issues/469)
-
-### Training
-
-#### Before training
-
-- If your dataset has BGM, please remove the BGM using software such as [Ultimate Vocal Remover](https://ultimatevocalremover.com/). `3_HP-Vocal-UVR.pth` or `UVR-MDX-NET Main` is recommended. [^1]
-- If your dataset is a long audio file with a single speaker, use `svc pre-split` to split the dataset into multiple files (using `librosa`).
-- If your dataset is a long audio file with multiple speakers, use `svc pre-sd` to split the dataset into multiple files (using `pyannote.audio`). Further manual classification may be necessary due to accuracy issues. If speakers speak with a variety of speech styles, set --min-speakers larger than the actual number of speakers. Due to unresolved dependencies, please install `pyannote.audio` manually: `pip install pyannote-audio`.
-- To manually classify audio files, `svc pre-classify` is available. Up and down arrow keys can be used to change the playback speed.
+4.run .bat
