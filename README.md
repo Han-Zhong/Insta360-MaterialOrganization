@@ -245,6 +245,10 @@
 
 ![GUI](https://raw.githubusercontent.com/Han-Zhong/Insta360_MaterialOrganization/main/docs/gui_mklink.png)
 
+界面_软链接 错误信息
+
+![GUI](https://raw.githubusercontent.com/Han-Zhong/Insta360_MaterialOrganization/main/docs/gui_mklink_error.png)
+
 界面_主界面:测试版界面
 
 ![GUI](https://raw.githubusercontent.com/Han-Zhong/Insta360_MaterialOrganization/main/docs/gui_main.png)
